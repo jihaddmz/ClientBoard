@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "130084037233",
+    "project_id": "clientboard-e1382",
+    "storage_bucket": "clientboard-e1382.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130084037233:android:916f0919c7ea78aa02f1d0",
+        "android_client_info": {
+          "package_name": "com.jihadmz.clientboard.clientboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7gv_QnlzNIvOM2wbxjI5RCpePYkljagg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
