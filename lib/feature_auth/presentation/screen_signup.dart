@@ -77,6 +77,7 @@ class ScreenSignUp extends StatelessWidget {
                   customTextFieldWithController(
                     context,
                     _controllerPassword,
+                    obscureText: true,
                     (password) {},
                     labelText: "Password*",
                     inputType: TextInputType.visiblePassword,

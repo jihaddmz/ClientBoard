@@ -46,7 +46,7 @@ class ScreenSignIn extends StatelessWidget {
                   height: 10,
                 ),
                 customTextFieldWithController(
-                    context, _controllerPassword, (password) {},
+                    context, _controllerPassword, obscureText: true, (password) {},
                     labelText: "Password*",
                     inputType: TextInputType.visiblePassword),
                 const SizedBox(height: 5),

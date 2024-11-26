@@ -10,6 +10,7 @@ Widget customTextFieldWithController(
   Widget? suffixIcon,
   bool enabled = true,
   String? labelText,
+  bool obscureText = false,
   String hintText = "",
   TextInputType inputType = TextInputType.text,
 }) {
@@ -22,6 +23,7 @@ Widget customTextFieldWithController(
     keyboardType: inputType,
     minLines: minLines,
     maxLines: maxLines,
+    obscureText: obscureText,
     decoration: InputDecoration(
         hintText: hintText,
         suffixIcon: suffixIcon,
