@@ -108,6 +108,34 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              customCard(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customSubHeader("Collaborators"),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount:
+                              providerProject.project!.collaborators.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                customParagraph(providerProject
+                                    .project!.collaborators[index]),
+                                // IconButton(
+                                //     onPressed: () {},
+                                //     icon: const Icon(Icons.delete_forever))
+                              ],
+                            );
+                          })
+                    ],
+                  ),
+                  1),
+              const SizedBox(
+                height: 20,
+              ),
               itemDetails("Budget", "\$${providerProject.project!.budget}"),
               const SizedBox(
                 height: 20,
