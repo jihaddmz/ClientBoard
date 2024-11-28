@@ -10,12 +10,35 @@ import 'package:provider/provider.dart';
 import '../state/provider_chat.dart';
 
 class ScreenProjectDetails extends StatelessWidget {
-  const ScreenProjectDetails({super.key});
+  ScreenProjectDetails({super.key});
+
+  final TextEditingController _controllerDesc = TextEditingController();
+  final TextEditingController _controllerDeadline = TextEditingController();
+  final TextEditingController _controllerFeatures = TextEditingController();
+  final TextEditingController _controllerBudget = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     ProviderProject providerProject = Provider.of(context);
     ProviderApp providerApp = Provider.of(context);
+
+    _controllerDeadline.text =
+        providerProject.project!.deadlineEdited.isNotEmpty
+            ? providerProject.project!.deadlineEdited
+            : providerProject.project!.deadline;
+    _controllerDesc.text = providerProject.project!.descriptionEdited.isNotEmpty
+        ? providerProject.project!.descriptionEdited
+        : providerProject.project!.description;
+    _controllerFeatures.text =
+        providerProject.project!.featuresEdited.isNotEmpty
+            ? providerProject.project!.featuresEdited
+            : providerProject.project!.features;
+    _controllerBudget.text = providerProject.project!.budgetEdited.isNotEmpty
+        ? providerProject.project!.budgetEdited
+        : providerProject.project!.budget;
+
+    _controllerDesc.text = _controllerDesc.text.replaceAll("\\n", "\n");
+    _controllerFeatures.text = _controllerFeatures.text.replaceAll("\\n", "\n");
 
     if (providerApp.isOnline == null) {
       providerApp
@@ -49,14 +72,16 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              itemDetails("Description", providerProject.project!.description,
+              itemDetails(context, _controllerDesc, "Description",
+                  providerProject.project!.description,
                   color: providerProject.project!.descriptionEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
               const SizedBox(
                 height: 20,
               ),
-              itemDetails("Deadline", providerProject.project!.deadline,
+              itemDetails(context, _controllerDeadline, "Deadline",
+                  providerProject.project!.deadline,
                   color: providerProject.project!.deadlineEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
@@ -109,7 +134,7 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              itemDetails("Features",
+              itemDetails(context, _controllerFeatures, "Features",
                   providerProject.project!.features.replaceAll("\\n", "\n"),
                   color: providerProject.project!.featuresEdited.isNotEmpty
                       ? Colors.red
@@ -142,7 +167,8 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              itemDetails("Budget", "\$${providerProject.project!.budget}",
+              itemDetails(context, _controllerBudget, "Budget",
+                  "\$${providerProject.project!.budget}",
                   color: providerProject.project!.budgetEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),

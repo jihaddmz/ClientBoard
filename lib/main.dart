@@ -92,6 +92,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark(useMaterial3: true).copyWith(
+            textSelectionTheme: const TextSelectionThemeData(
+                cursorColor: CustomColors.grey,
+                selectionHandleColor: CustomColors.grey),
             datePickerTheme: const DatePickerThemeData(
               surfaceTintColor: CustomColors.border,
             )),
@@ -105,7 +108,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           "/signin": (context) => ScreenSignIn(),
           "/home": (context) => const ScreenHome(),
           "/signup": (context) => ScreenSignUp(),
-          "/project_details": (context) => const ScreenProjectDetails(),
+          "/project_details": (context) => ScreenProjectDetails(),
           "/chat": (context) => const ScreenChat(),
           "/new_project": (context) => const ScreenCreateProject(),
         },

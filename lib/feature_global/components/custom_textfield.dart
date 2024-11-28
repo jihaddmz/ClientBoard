@@ -1,19 +1,19 @@
 import 'package:clientboard/custom_color.dart';
 import 'package:flutter/material.dart';
 
-Widget customTextFieldWithController(
-  BuildContext context,
-  TextEditingController controller,
-  Function(String) onValueChange, {
-  int maxLines = 1,
-  int minLines = 1,
-  Widget? suffixIcon,
-  bool enabled = true,
-  String? labelText,
-  bool obscureText = false,
-  String hintText = "",
-  TextInputType inputType = TextInputType.text,
-}) {
+Widget customTextFieldWithController(BuildContext context,
+    TextEditingController controller,
+    Function(String) onValueChange, {
+      int maxLines = 1,
+      int minLines = 1,
+      Color color = Colors.white,
+      Widget? suffixIcon,
+      bool enabled = true,
+      String? labelText,
+      bool obscureText = false,
+      String hintText = "",
+      TextInputType inputType = TextInputType.text,
+    }) {
   return TextFormField(
     controller: controller,
     onChanged: (value) {
@@ -24,6 +24,7 @@ Widget customTextFieldWithController(
     minLines: minLines,
     maxLines: maxLines,
     obscureText: obscureText,
+    style: TextStyle(color: color),
     decoration: InputDecoration(
         hintText: hintText,
         suffixIcon: suffixIcon,
