@@ -49,11 +49,17 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              itemDetails("Description", providerProject.project!.description),
+              itemDetails("Description", providerProject.project!.description,
+                  color: providerProject.project!.descriptionEdited.isNotEmpty
+                      ? Colors.red
+                      : CustomColors.grey),
               const SizedBox(
                 height: 20,
               ),
-              itemDetails("Deadline", providerProject.project!.deadline),
+              itemDetails("Deadline", providerProject.project!.deadline,
+                  color: providerProject.project!.deadlineEdited.isNotEmpty
+                      ? Colors.red
+                      : CustomColors.grey),
               const SizedBox(
                 height: 20,
               ),
@@ -104,7 +110,10 @@ class ScreenProjectDetails extends StatelessWidget {
                 height: 20,
               ),
               itemDetails("Features",
-                  providerProject.project!.features.replaceAll("\\n", "\n")),
+                  providerProject.project!.features.replaceAll("\\n", "\n"),
+                  color: providerProject.project!.featuresEdited.isNotEmpty
+                      ? Colors.red
+                      : CustomColors.grey),
               const SizedBox(
                 height: 20,
               ),
@@ -124,9 +133,6 @@ class ScreenProjectDetails extends StatelessWidget {
                               children: [
                                 customParagraph(providerProject
                                     .project!.collaborators[index]),
-                                // IconButton(
-                                //     onPressed: () {},
-                                //     icon: const Icon(Icons.delete_forever))
                               ],
                             );
                           })
@@ -136,7 +142,10 @@ class ScreenProjectDetails extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              itemDetails("Budget", "\$${providerProject.project!.budget}"),
+              itemDetails("Budget", "\$${providerProject.project!.budget}",
+                  color: providerProject.project!.budgetEdited.isNotEmpty
+                      ? Colors.red
+                      : CustomColors.grey),
               const SizedBox(
                 height: 20,
               ),

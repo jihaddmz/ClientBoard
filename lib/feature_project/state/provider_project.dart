@@ -15,7 +15,9 @@ class ProviderProject extends ChangeNotifier {
   }
 
   List<ModelChat>? _chats;
+
   List<ModelChat>? get chats => _chats;
+
   set addChat(ModelChat chat) {
     _chats ??= [];
     _chats!.add(chat);
@@ -37,13 +39,18 @@ class ProviderProject extends ChangeNotifier {
             // if the current user is the admin developer one, or if he/she is one of the collaborators, add the project
             projects ??= [];
             projects!.add(ModelProject(
-                documentChange.doc.id,
-                documentChange.doc.get("deadline"),
-                documentChange.doc.get("description"),
-                documentChange.doc.get("features"),
-                documentChange.doc.get("platforms"),
-                documentChange.doc.get("budget"),
-                List<String>.from(documentChange.doc.get("collaborators"))));
+              documentChange.doc.id,
+              documentChange.doc.get("deadline"),
+              documentChange.doc.get("description"),
+              documentChange.doc.get("features"),
+              documentChange.doc.get("platforms"),
+              documentChange.doc.get("budget"),
+              List<String>.from(documentChange.doc.get("collaborators")),
+              deadlineEdited: documentChange.doc.get("deadline_edited"),
+              descriptionEdited: documentChange.doc.get("description_edited"),
+              featuresEdited: documentChange.doc.get("features_edited"),
+              budgetEdited: documentChange.doc.get("budget_edited"),
+            ));
             notifyListeners();
           }
         }

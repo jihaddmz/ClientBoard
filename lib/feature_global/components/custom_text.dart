@@ -32,11 +32,11 @@ Widget customParagraph(String text, {TextAlign align = TextAlign.start}) {
       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal));
 }
 
-Widget customCaption(String text, {TextAlign align = TextAlign.start}) {
+Widget customCaption(String text, {TextAlign align = TextAlign.start, Color color = CustomColors.grey}) {
   return Text(
     text,
     textAlign: align,
-    style: const TextStyle(
-        fontSize: 13, fontWeight: FontWeight.normal, color: CustomColors.grey),
+    style: TextStyle(
+        fontSize: 13, fontWeight: FontWeight.normal, color: color),
   );
 }
