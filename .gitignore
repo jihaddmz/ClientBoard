@@ -4,3 +4,5 @@ build
 .dart_tool
 lib/firebase_options.dart
 .idea
+.flutter-plugins-dependencies
+.flutter-plugins
