@@ -91,6 +91,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       color: CustomColors.black,
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(useMaterial3: true).copyWith(
             textSelectionTheme: const TextSelectionThemeData(
                 cursorColor: CustomColors.grey,
