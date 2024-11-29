@@ -38,19 +38,8 @@ class ProviderProject extends ChangeNotifier {
               HelperSharedPref.getUsername() == HelperConstants.adminName) {
             // if the current user is the admin developer one, or if he/she is one of the collaborators, add the project
             projects ??= [];
-            projects!.add(ModelProject(
-              documentChange.doc.id,
-              documentChange.doc.get("deadline"),
-              documentChange.doc.get("description"),
-              documentChange.doc.get("features"),
-              documentChange.doc.get("platforms"),
-              documentChange.doc.get("budget"),
-              List<String>.from(documentChange.doc.get("collaborators")),
-              deadlineEdited: documentChange.doc.get("deadline_edited"),
-              descriptionEdited: documentChange.doc.get("description_edited"),
-              featuresEdited: documentChange.doc.get("features_edited"),
-              budgetEdited: documentChange.doc.get("budget_edited"),
-            ));
+            projects!.add(ModelProject.fromFirestore(
+                documentChange.doc.data()!, documentChange.doc.id));
             notifyListeners();
           }
         }
@@ -58,9 +47,49 @@ class ProviderProject extends ChangeNotifier {
     });
   }
 
+  Future<void> approveProjectChanges(ModelProject project) async {
+    Map<String, dynamic> map = {
+      "budget": project.budgetEdited.isNotEmpty
+          ? project.budgetEdited
+          : project.budget,
+      "budget_edited": "",
+      "collaborators": project.collaborators,
+      "deadline": project.deadlineEdited.isNotEmpty
+          ? project.deadlineEdited
+          : project.deadline,
+      "deadline_edited": "",
+      "description": project.descriptionEdited.isNotEmpty
+          ? project.descriptionEdited
+          : project.description,
+      "description_edited": "",
+      "features": project.featuresEdited.isNotEmpty
+          ? project.featuresEdited
+          : project.features,
+      "features_edited": "",
+      "platforms": project.platforms
+    };
+
+    await FirebaseFirestore.instance
+        .collection("projects")
+        .doc(project.name)
+        .set(map);
+  }
+
   void refreshProject(ModelProject project) {
     _project = project;
     notifyListeners();
+  }
+
+  Future<void> reFetchProject(String projectName) async {
+    await FirebaseFirestore.instance
+        .collection("projects")
+        .doc(projectName)
+        .get()
+        .then((querySnapshot) {
+      _project =
+          ModelProject.fromFirestore(querySnapshot.data()!, querySnapshot.id);
+      notifyListeners();
+    });
   }
 
   Future<void> editProject(ModelProject project) async {

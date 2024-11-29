@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ModelProject {
   String name;
   String deadline;
@@ -18,6 +20,19 @@ class ModelProject {
       this.descriptionEdited = "",
       this.featuresEdited = "",
       this.budgetEdited = ""});
+
+  ModelProject.fromFirestore(Map<String, dynamic> doc, String id)
+      : budget = doc["budget"],
+        budgetEdited = doc["budget_edited"],
+        name = id,
+        deadline = doc["deadline"],
+        deadlineEdited = doc["deadline_edited"],
+        description = doc["description"],
+        descriptionEdited = doc["description_edited"],
+        platforms = doc["platforms"],
+        collaborators = List<String>.from(doc["collaborators"]),
+        features = doc["features"],
+        featuresEdited = doc["features_edited"];
 
   Map<String, dynamic> toFirestoreObject() {
     return {

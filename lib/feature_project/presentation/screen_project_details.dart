@@ -1,7 +1,10 @@
 import 'package:clientboard/custom_color.dart';
+import 'package:clientboard/feature_global/components/custom_button.dart';
 import 'package:clientboard/feature_global/components/custom_card.dart';
 import 'package:clientboard/feature_global/components/custom_text.dart';
+import 'package:clientboard/feature_global/helper/helper_constants.dart';
 import 'package:clientboard/feature_global/helper/helper_dialog.dart';
+import 'package:clientboard/feature_global/helper/helper_sharedpref.dart';
 import 'package:clientboard/feature_global/state/provider_app.dart';
 import 'package:clientboard/feature_project/components/item_details.dart';
 import 'package:clientboard/feature_project/state/provider_project.dart';
@@ -82,7 +85,7 @@ class ScreenProjectDetails extends StatelessWidget {
                                 .editProject(providerProject.project!);
                             context.read<ProviderChat>().addChat(
                                 providerProject.project!.name,
-                                "Send a request update, pls check it out!");
+                                "Sent a request update, pls check it out!");
                             Navigator.pop(context);
                             providerProject
                                 .refreshProject(providerProject.project!);
@@ -231,12 +234,48 @@ class ScreenProjectDetails extends StatelessWidget {
                       context.read<ProviderProject>().project!.name);
                   Navigator.pushNamed(context, "/chat");
                 },
-              )
+              ),
+              Visibility(
+                  visible: HelperSharedPref.getUsername() ==
+                      HelperConstants.adminName,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: customButton(
+                        text: "Approve Edit",
+                        widthFactor: 0.8,
+                        onClick: () async {
+                          if (validateChangesRequested()) {
+                            HelperDialog.showBottomSheet(context,
+                                "Are you sure you want to approve the requested changes?",
+                                () async {
+                              HelperDialog.showLoadingDialog(context);
+                              await providerProject.approveProjectChanges(
+                                  providerProject.project!);
+                              await providerProject.reFetchProject(
+                                  providerProject.project!.name);
+                              context.read<ProviderChat>().addChat(
+                                  providerProject.project!.name,
+                                  "Requested Changes have been approved!");
+                              Navigator.pop(context);
+                            });
+                          } else {
+                            HelperDialog.showWarningDialog(context,
+                                "There are no requested changes to approve");
+                          }
+                        }),
+                  ))
             ],
           ),
         ),
       ),
     ));
+  }
+
+  bool validateChangesRequested() {
+    return providerProject.project!.budgetEdited.isNotEmpty ||
+        providerProject.project!.featuresEdited.isNotEmpty ||
+        providerProject.project!.deadlineEdited.isNotEmpty ||
+        providerProject.project!.descriptionEdited.isNotEmpty;
   }
 
   bool validateEnteredEditedDetails() {
