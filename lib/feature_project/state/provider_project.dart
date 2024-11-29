@@ -24,7 +24,21 @@ class ProviderProject extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isProjectDetailsCreated = false;
+  bool get isProjectDetailsCreated => _isProjectDetailsCreated;
+  set isProjectDetailsCreated(bool value) {
+    _isProjectDetailsCreated = value;
+    notifyListeners();
+  }
+
   List<ModelProject>? projects;
+
+  void listenForProjectUpdates(String projectName) {
+    FirebaseFirestore.instance.collection("projects").doc(projectName).snapshots().listen((result){
+      _project = ModelProject.fromFirestore(result.data()!, result.id);
+      notifyListeners();
+    });
+  }
 
   void fetchProjects() {
     FirebaseFirestore.instance

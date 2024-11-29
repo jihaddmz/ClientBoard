@@ -45,6 +45,12 @@ class ScreenProjectDetails extends StatelessWidget {
     _controllerDesc.text = _controllerDesc.text.replaceAll("\\n", "\n");
     _controllerFeatures.text = _controllerFeatures.text.replaceAll("\\n", "\n");
 
+    if (!providerProject.isProjectDetailsCreated) {
+      providerProject.listenForProjectUpdates(providerProject.project!.name);
+    }
+
+    providerProject.isProjectDetailsCreated = true;
+
     if (providerApp.isOnline == null) {
       providerApp
           .fetchOnlineStatus(providerProject.project!.collaborators.first);
