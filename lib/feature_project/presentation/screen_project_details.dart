@@ -1,6 +1,7 @@
 import 'package:clientboard/custom_color.dart';
 import 'package:clientboard/feature_global/components/custom_card.dart';
 import 'package:clientboard/feature_global/components/custom_text.dart';
+import 'package:clientboard/feature_global/helper/helper_dialog.dart';
 import 'package:clientboard/feature_global/state/provider_app.dart';
 import 'package:clientboard/feature_project/components/item_details.dart';
 import 'package:clientboard/feature_project/state/provider_project.dart';
@@ -17,9 +18,11 @@ class ScreenProjectDetails extends StatelessWidget {
   final TextEditingController _controllerFeatures = TextEditingController();
   final TextEditingController _controllerBudget = TextEditingController();
 
+  late ProviderProject providerProject;
+
   @override
   Widget build(BuildContext context) {
-    ProviderProject providerProject = Provider.of(context);
+    providerProject = Provider.of(context);
     ProviderApp providerApp = Provider.of(context);
 
     _controllerDeadline.text =
@@ -33,9 +36,8 @@ class ScreenProjectDetails extends StatelessWidget {
         providerProject.project!.featuresEdited.isNotEmpty
             ? providerProject.project!.featuresEdited
             : providerProject.project!.features;
-    _controllerBudget.text = providerProject.project!.budgetEdited.isNotEmpty
-        ? providerProject.project!.budgetEdited
-        : providerProject.project!.budget;
+    _controllerBudget.text =
+        "\$ ${providerProject.project!.budgetEdited.isNotEmpty ? providerProject.project!.budgetEdited : providerProject.project!.budget}";
 
     _controllerDesc.text = _controllerDesc.text.replaceAll("\\n", "\n");
     _controllerFeatures.text = _controllerFeatures.text.replaceAll("\\n", "\n");
@@ -57,23 +59,43 @@ class ScreenProjectDetails extends StatelessWidget {
                 height: 20,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back_ios)),
+                      customHeader("Project Details")
+                    ],
+                  ),
                   IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        if (validateEnteredEditedDetails()) {
+                          HelperDialog.showBottomSheet(context,
+                              "Are you sure you want to request edit for project: ${providerProject.project!.name}?",
+                              () async {
+                            HelperDialog.showLoadingDialog(context);
+                            await providerProject
+                                .editProject(providerProject.project!);
+                            Navigator.pop(context);
+                            providerProject.refreshProject(providerProject.project!);
+                          });
+                        } else {
+                          HelperDialog.showWarningDialog(
+                              context, "No edits has been detected!");
+                        }
                       },
-                      icon: const Icon(Icons.arrow_back_ios)),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  customHeader("Project Details")
+                      icon: const Icon(Icons.edit_note))
                 ],
               ),
               const SizedBox(
                 height: 30,
               ),
               itemDetails(context, _controllerDesc, "Description",
-                  providerProject.project!.description,
+                  providerProject.project!.descriptionEdited.isEmpty,
                   color: providerProject.project!.descriptionEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
@@ -81,7 +103,7 @@ class ScreenProjectDetails extends StatelessWidget {
                 height: 20,
               ),
               itemDetails(context, _controllerDeadline, "Deadline",
-                  providerProject.project!.deadline,
+                  providerProject.project!.deadlineEdited.isEmpty,
                   color: providerProject.project!.deadlineEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
@@ -135,7 +157,7 @@ class ScreenProjectDetails extends StatelessWidget {
                 height: 20,
               ),
               itemDetails(context, _controllerFeatures, "Features",
-                  providerProject.project!.features.replaceAll("\\n", "\n"),
+                  providerProject.project!.featuresEdited.isEmpty,
                   color: providerProject.project!.featuresEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
@@ -168,7 +190,7 @@ class ScreenProjectDetails extends StatelessWidget {
                 height: 20,
               ),
               itemDetails(context, _controllerBudget, "Budget",
-                  "\$${providerProject.project!.budget}",
+                  providerProject.project!.budgetEdited.isEmpty,
                   color: providerProject.project!.budgetEdited.isNotEmpty
                       ? Colors.red
                       : CustomColors.grey),
@@ -210,5 +232,30 @@ class ScreenProjectDetails extends StatelessWidget {
         ),
       ),
     ));
+  }
+
+  bool validateEnteredEditedDetails() {
+    bool result = false;
+    if (_controllerDesc.text != providerProject.project!.description && _controllerDesc.text != providerProject.project!.descriptionEdited) {
+      providerProject.project!.descriptionEdited = _controllerDesc.text;
+      result = true;
+    }
+
+    if (_controllerDeadline.text != providerProject.project!.deadline && _controllerDeadline.text != providerProject.project!.deadlineEdited) {
+      providerProject.project!.deadlineEdited = _controllerDeadline.text;
+      result = true;
+    }
+
+    if (_controllerFeatures.text != providerProject.project!.features && _controllerFeatures.text != providerProject.project!.featuresEdited) {
+      providerProject.project!.featuresEdited = _controllerFeatures.text;
+      result = true;
+    }
+
+    if (_controllerBudget.text != "\$ ${providerProject.project!.budget}" && _controllerBudget.text != "\$ ${providerProject.project!.budgetEdited}") {
+      providerProject.project!.budgetEdited = _controllerBudget.text;
+      result = true;
+    }
+
+    return result;
   }
 }

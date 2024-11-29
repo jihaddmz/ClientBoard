@@ -57,4 +57,16 @@ class ProviderProject extends ChangeNotifier {
       }
     });
   }
+
+  void refreshProject(ModelProject project) {
+    _project = project;
+    notifyListeners();
+  }
+
+  Future<void> editProject(ModelProject project) async {
+    await FirebaseFirestore.instance
+        .collection("projects")
+        .doc(project.name)
+        .set(project.toFirestoreObject(), SetOptions(merge: true));
+  }
 }

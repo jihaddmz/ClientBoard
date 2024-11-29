@@ -50,13 +50,6 @@ class ProviderNewProject extends ChangeNotifier {
     await FirebaseFirestore.instance
         .collection("projects")
         .doc(project.name)
-        .set({
-      "budget": project.budget,
-      "collaborators": project.collaborators,
-      "deadline": project.deadline,
-      "description": project.description,
-      "features": project.features,
-      "platforms": project.platforms
-    });
+        .set(project.toFirestoreObject());
   }
 }

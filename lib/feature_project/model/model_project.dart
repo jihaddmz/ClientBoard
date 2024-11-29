@@ -18,4 +18,19 @@ class ModelProject {
       this.descriptionEdited = "",
       this.featuresEdited = "",
       this.budgetEdited = ""});
+
+  Map<String, dynamic> toFirestoreObject() {
+    return {
+      "budget": budget,
+      "budget_edited": budgetEdited,
+      "collaborators": collaborators,
+      "deadline": deadline,
+      "deadline_edited": deadlineEdited,
+      "description": description,
+      "description_edited": descriptionEdited,
+      "features": features,
+      "features_edited": featuresEdited,
+      "platforms": platforms
+    };
+  }
 }

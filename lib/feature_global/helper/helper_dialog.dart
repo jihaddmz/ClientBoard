@@ -45,4 +45,49 @@ class HelperDialog {
               ),
             ));
   }
+
+  static void showBottomSheet(
+      BuildContext context, String text, VoidCallback onYesClick) {
+    showModalBottomSheet(
+        context: context,
+        showDragHandle: true,
+        backgroundColor: CustomColors.border,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FractionallySizedBox(
+                    widthFactor: 0.7,
+                    child: customParagraph(text, align: TextAlign.center)),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: customButton(
+                            text: "No",
+                            widthFactor: 0.7,
+                            onClick: () {
+                              Navigator.pop(context);
+                            })),
+                    Expanded(
+                      child: customButton(
+                          text: "Yes",
+                          widthFactor: 0.7,
+                          onClick: () {
+                            Navigator.pop(context);
+                            onYesClick();
+                          }),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
 }

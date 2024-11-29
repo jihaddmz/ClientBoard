@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 
 import '../../custom_color.dart';
 
-Widget itemDetails(BuildContext context, TextEditingController controller, String label, String text, {Color color = CustomColors.grey}) {
+Widget itemDetails(BuildContext context, TextEditingController controller, String label, bool enabled, {Color color = CustomColors.grey}) {
   return customCard(
       Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           customSubHeader(label),
-          customTextFieldWithController(context, controller, (value){}, color: color, maxLines: 10)
+          customTextFieldWithController(context, controller, enabled: enabled, (value){}, color: color, maxLines: 10)
           // customCaption(text, color: color),
         ],
       ),
