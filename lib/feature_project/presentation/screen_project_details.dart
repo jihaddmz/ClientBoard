@@ -80,8 +80,12 @@ class ScreenProjectDetails extends StatelessWidget {
                             HelperDialog.showLoadingDialog(context);
                             await providerProject
                                 .editProject(providerProject.project!);
+                            context.read<ProviderChat>().addChat(
+                                providerProject.project!.name,
+                                "Send a request update, pls check it out!");
                             Navigator.pop(context);
-                            providerProject.refreshProject(providerProject.project!);
+                            providerProject
+                                .refreshProject(providerProject.project!);
                           });
                         } else {
                           HelperDialog.showWarningDialog(
@@ -160,7 +164,8 @@ class ScreenProjectDetails extends StatelessWidget {
                   providerProject.project!.featuresEdited.isEmpty,
                   color: providerProject.project!.featuresEdited.isNotEmpty
                       ? Colors.red
-                      : CustomColors.grey),
+                      : CustomColors.grey,
+                  inputType: TextInputType.multiline),
               const SizedBox(
                 height: 20,
               ),
@@ -236,22 +241,27 @@ class ScreenProjectDetails extends StatelessWidget {
 
   bool validateEnteredEditedDetails() {
     bool result = false;
-    if (_controllerDesc.text != providerProject.project!.description && _controllerDesc.text != providerProject.project!.descriptionEdited) {
+    if (_controllerDesc.text != providerProject.project!.description &&
+        _controllerDesc.text != providerProject.project!.descriptionEdited) {
       providerProject.project!.descriptionEdited = _controllerDesc.text;
       result = true;
     }
 
-    if (_controllerDeadline.text != providerProject.project!.deadline && _controllerDeadline.text != providerProject.project!.deadlineEdited) {
+    if (_controllerDeadline.text != providerProject.project!.deadline &&
+        _controllerDeadline.text != providerProject.project!.deadlineEdited) {
       providerProject.project!.deadlineEdited = _controllerDeadline.text;
       result = true;
     }
 
-    if (_controllerFeatures.text != providerProject.project!.features && _controllerFeatures.text != providerProject.project!.featuresEdited) {
+    if (_controllerFeatures.text != providerProject.project!.features &&
+        _controllerFeatures.text != providerProject.project!.featuresEdited) {
       providerProject.project!.featuresEdited = _controllerFeatures.text;
       result = true;
     }
 
-    if (_controllerBudget.text != "\$ ${providerProject.project!.budget}" && _controllerBudget.text != "\$ ${providerProject.project!.budgetEdited}") {
+    if (_controllerBudget.text != "\$ ${providerProject.project!.budget}" &&
+        _controllerBudget.text !=
+            "\$ ${providerProject.project!.budgetEdited}") {
       providerProject.project!.budgetEdited = _controllerBudget.text;
       result = true;
     }
